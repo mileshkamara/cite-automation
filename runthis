@@ -1,8 +1,6 @@
 !/bin/bash
 #file to logout all users and prevent login
 
-sudo touch /etc/nologin
-
 if [[ $# -ne 1 ]]; then
         echo "need name of user to ignore"
         exit
@@ -11,7 +9,7 @@ fi
 myname=$1
 
 users="$(who -u | awk '{ print $1 }' | uniq)"
-
+touch /etc/nologin
 for user in $user; do
         echo "check: $user"
         if [[ $user == $myname ]]; then
@@ -21,3 +19,7 @@ for user in $user; do
         echo "kicking out user-name $user"
         pkill KILL -u $user
 done
+
+sleep 120
+
+rm /etc/nologin
