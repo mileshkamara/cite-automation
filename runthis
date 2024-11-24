@@ -1,3 +1,23 @@
-w #finds users
-pkill KILL -u "user" #use to kill a specific user
-#create file in /etc and name it nologin
+!/bin/bash
+#file to logout all users and prevent login
+
+sudo touch /etc/nologin
+
+if [[ $# -ne 1 ]]; then
+        echo "need name of user to ignore"
+        exit
+fi
+
+myname=$1
+
+users="$(who -u | awk '{ print $1 }' | uniq)"
+
+for user in $user; do
+        echo "check: $user"
+        if [[ $user == $myname ]]; then
+                echo "ignore: $user"
+                continue
+        fi
+        echo "kicking out user-name $user"
+        pkill KILL -u $user
+done
