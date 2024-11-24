@@ -1,16 +1,18 @@
 !/bin/bash
 #file to logout all users and prevent login
 
-if [[ $# -ne 1 ]]; then
+if [[ $# -ne 1 ]]; then                             #checks for a usernime to not log out when program runs, if there is no username it ends the program 
         echo "need name of user to ignore"
         exit
 fi
 
 myname=$1
 
-users="$(who -u | awk '{ print $1 }' | uniq)"
-touch /etc/nologin
-for user in $user; do
+users="$(who -u | awk '{ print $1 }' | uniq)"       #checks for active users, removes infromation that isnt in the first line, which only leaves the username
+
+touch /etc/nologin                                  #creates no login file
+
+for user in $user; do                               #checks if the user the the whitelisted name, if it is it ignores the user, if it is not it continues onto using pkill to log out a user
         echo "check: $user"
         if [[ $user == $myname ]]; then
                 echo "ignore: $user"
@@ -20,6 +22,6 @@ for user in $user; do
         pkill KILL -u $user
 done
 
-sleep 120
+sleep 120                                           #waits 2 minutes after all users kicked
 
-rm /etc/nologin
+rm /etc/nologin                                     #removes the no login folder, not a part of the program for stopping log in but just to ensure your account doesnt stay locked out
