@@ -1,1 +1,3 @@
-
+w #finds users
+pkill KILL -u "user" #use to kill a specific user
+#create file in /etc and name it nologin
